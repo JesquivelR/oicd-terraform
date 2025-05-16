@@ -1,0 +1,20 @@
+# .github/workflows/AWSTest.yml
+name: AWSTest
+on: 
+  workflow_dispatch: # Permite ejecución manual desde UI:cite[4]:cite[9]
+
+jobs:
+  test-aws:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write # Obligatorio para OIDC:cite[2]:cite[6]
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secret.AWS_ROLE_ARN }} # Usa variables de repositorio
+          aws-region: us-east-1
+      - name: Test AWS commands
+        run: aws s3 ls
